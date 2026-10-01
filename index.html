@@ -14,7 +14,7 @@
   --severe:#c62828; --high:#e8710a; --watch:#b58900; --info:#3a6ea5;
   --severe-bg:#fdeaea; --high-bg:#fff0e0; --watch-bg:#fff7d6; --info-bg:#e6eff8;
   --road:#7b1fa2; --road-bg:#f3e5f5;
-  --accent:#0b5cad; --shadow:0 4px 18px rgba(20,33,43,.16);
+  --accent:#0b5cad; --warn-bg:#fff3cd; --warn-ink:#6b4e00; --shadow:0 4px 18px rgba(20,33,43,.16);
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
@@ -22,7 +22,7 @@
     --severe:#ff6b64; --high:#ffa24d; --watch:#e6c040; --info:#7db4ea;
     --severe-bg:#3a1c1c; --high-bg:#3a2a16; --watch-bg:#38311a; --info-bg:#1b2c3d;
     --road:#d28bf0; --road-bg:#2f1c3a;
-    --accent:#6db3f2; --shadow:0 4px 18px rgba(0,0,0,.5);
+    --accent:#6db3f2; --warn-bg:#3a3014; --warn-ink:#f0d27a; --shadow:0 4px 18px rgba(0,0,0,.5);
   }
 }
 :root[data-theme="dark"]{
@@ -30,7 +30,7 @@
   --severe:#ff6b64; --high:#ffa24d; --watch:#e6c040; --info:#7db4ea;
   --severe-bg:#3a1c1c; --high-bg:#3a2a16; --watch-bg:#38311a; --info-bg:#1b2c3d;
   --road:#d28bf0; --road-bg:#2f1c3a;
-  --accent:#6db3f2; --shadow:0 4px 18px rgba(0,0,0,.5);
+  --accent:#6db3f2; --warn-bg:#3a3014; --warn-ink:#f0d27a; --shadow:0 4px 18px rgba(0,0,0,.5);
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans Thai",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;font-size:15px;line-height:1.5}
@@ -42,12 +42,19 @@ h1{font-size:20px;margin:0;font-weight:700}
 .btn:hover{border-color:var(--accent);color:var(--accent)}
 .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
 .btn.primary:hover{color:#fff;opacity:.9}
+.stamp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:0 16px 12px}
+.stamp div{background:var(--panel);padding:9px 14px;min-width:0}
+.stamp small{display:block;color:var(--ink2);font-size:12px}
+.stamp b{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+.stamp .rel{color:var(--ink2);font-weight:400;font-size:12.5px}
+.stamp.stale div:nth-child(2){background:var(--warn-bg);color:var(--warn-ink)}
+.stamp.stale div:nth-child(2) small,.stamp.stale .rel{color:var(--warn-ink)}
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 16px 12px}
 .kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
 .kpi b{display:block;font-size:22px;line-height:1.2}
 .kpi span{font-size:12px;color:var(--ink2)}
 .kpi.red b{color:var(--severe)} .kpi.org b{color:var(--high)}
-main{display:grid;grid-template-columns:1fr 360px;gap:12px;padding:0 16px 12px;height:calc(100vh - 190px);min-height:520px}
+main{display:grid;grid-template-columns:1fr 360px;gap:12px;padding:0 16px 12px;height:calc(100vh - 260px);min-height:520px}
 #map{border-radius:12px;border:1px solid var(--line);min-height:420px}
 aside{background:var(--panel);border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column;min-height:0;overflow:hidden}
 .filters{display:flex;gap:6px;flex-wrap:wrap;padding:10px;border-bottom:1px solid var(--line)}
@@ -93,6 +100,7 @@ aside{background:var(--panel);border:1px solid var(--line);border-radius:12px;di
 :root[data-theme="dark"] .leaflet-tile-pane{filter:brightness(.72) contrast(1.05) saturate(.8)}
 @media (max-width:900px){
   .kpis{grid-template-columns:repeat(2,1fr)}
+  .stamp{grid-template-columns:minmax(0,1fr)}
   main{grid-template-columns:1fr;height:auto}
   #map{height:62vh}
   aside{max-height:none}
@@ -106,7 +114,7 @@ aside{background:var(--panel);border:1px solid var(--line);border-radius:12px;di
 <header>
   <div>
     <h1>แผนที่เฝ้าระวังน้ำท่วม ปราจีนบุรี → กรุงเทพฯ</h1>
-    <div class="sub">ชี้เมาส์ที่จุดบนแผนที่ (หรือแตะบนมือถือ) เพื่อดูรายละเอียด · ข้อมูลจากข่าวและประกาศทางการ ณ 29 ก.ย. – 1 ต.ค. 2569</div>
+    <div class="sub">ชี้เมาส์ที่จุดบนแผนที่ (หรือแตะบนมือถือ) เพื่อดูรายละเอียด · ไม่ใช่ข้อมูลทางการและไม่ใช่ข้อมูลเรียลไทม์</div>
   </div>
   <div class="btns">
     <a class="btn primary" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&origin=Prachin+Buri&destination=Bangkok&travelmode=driving">เปิดเส้นทางใน Google Maps</a>
@@ -114,6 +122,8 @@ aside{background:var(--panel);border:1px solid var(--line);border-radius:12px;di
     <button class="btn" id="theme">โหมดมืด/สว่าง</button>
   </div>
 </header>
+
+<section class="stamp" id="stamp" aria-live="polite"></section>
 
 <section class="kpis" id="kpis"></section>
 
@@ -127,9 +137,10 @@ aside{background:var(--panel);border:1px solid var(--line);border-radius:12px;di
 </main>
 
 <section class="notes">
-  <p><b>ถนนที่น้ำท่วม (หมุดม่วง):</b> ระบุตามเลขทางหลวง/ช่วง กม. ที่กรมทางหลวงและข่าวรายงาน ณ 26–29 ก.ย. 69 แต่แหล่งข่าวไม่มีพิกัดรายจุด ผมจึงวางหมุดและวงพื้นที่โดยประมาณระดับอำเภอ ไม่ได้วาดทับแนวถนนจริง สถานะบางจุดอาจเปลี่ยนแล้ว ให้ตรวจกับกรมทางหลวง (โทร 1586 หรือระบบ HDMS) ก่อนเดินทาง</p>
+  <p><b>ถนนที่น้ำท่วม (หมุดม่วง):</b> ระบุตามเลขทางหลวง/ช่วง กม. ที่กรมทางหลวงและข่าวรายงาน ณ 26–29 ก.ย. 69 แต่แหล่งข่าวไม่มีพิกัดรายจุด จึงวางหมุดและวงพื้นที่โดยประมาณระดับอำเภอ ไม่ได้วาดทับแนวถนนจริง สถานะบางจุดอาจเปลี่ยนแล้ว ให้ตรวจกับกรมทางหลวง (โทร 1586 หรือระบบ HDMS) ก่อนเดินทาง</p>
   <p><b>ข้อจำกัด:</b> ตัวเลขเป็นระดับน้ำรายสถานีและรายงานข่าวภาคสนาม ไม่ใช่ความลึกน้ำบนถนนทุกช่วง และไม่ใช่ข้อมูลเรียลไทม์ · ตำแหน่งหมุดเป็นพิกัดโดยประมาณของอำเภอ/เมือง ไม่ใช่ตำแหน่งสถานีวัดน้ำจริง · เส้นประเป็นแนวเชื่อมจุดโดยประมาณ ไม่ใช่เส้นทางถนนจริง ให้ตรวจเส้นทางจริงใน Google Maps และสอบถามกรมทางหลวง (โทร 1586) ก่อนเดินทาง</p>
   <p><b>เขื่อนนฤบดินทรจินดา (ปราจีนบุรี):</b> กักเก็บ 270 จาก 295 ล้าน ลบ.ม. (92%) น้ำไหลเข้า 5.47 ล้าน ลบ.ม./วัน ไม่มีการระบาย รับน้ำได้อีก 25 ล้าน ลบ.ม. · <b>ประกาศเตือน:</b> น้ำทะเลหนุนสูง 29 ก.ย. – 4 ต.ค. 69 (กรมชลประทาน/สทนช.) และฝนหนักระลอกใหม่ 4–6 ต.ค. ในภาคกลางและ กทม.</p>
+  <p><b>การอัปเดต:</b> Claude ค้นข่าวและประกาศล่าสุดทุกเช้าแล้วจัดทำไฟล์ใหม่ เวลาในแถบด้านบนคือเวลาที่ดึงข้อมูลครั้งล่าสุดและรอบถัดไปตามกำหนด ถ้ารอบถัดไปเลยกำหนดเกิน 2 ชั่วโมง แถบจะเปลี่ยนเป็นสีเหลืองเพื่อเตือนว่าข้อมูลอาจเก่า</p>
 </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -142,6 +153,12 @@ const LEVELS = {
   info:  {label:"ข้อมูลต้นน้ำ", color:"var(--info)",   hex:"#3a6ea5", rank:3}
 };
 
+/* ===== AUTO-UPDATED BLOCK START — งานอัตโนมัติรายเช้าแก้เฉพาะส่วนนี้ (DATA_META, SRC, POINTS) ===== */
+const DATA_META = {
+  updatedAt: "2026-10-01T09:10:00+07:00",   // เวลาที่ Claude ดึงข้อมูลครั้งล่าสุด
+  nextUpdate: "2026-10-02T08:30:00+07:00",  // เวลาตามกำหนดของรอบถัดไป
+  dataAsOf: "ข่าวและประกาศถึง 1 ต.ค. 2569"
+};
 const SRC = {
   pbs1:{t:"Thai PBS (30 ก.ย.)", u:"https://thaipbs.or.th/news/content/558912"},
   pbs2:{t:"Thai PBS รพ.อพยพ", u:"https://thaipbs.or.th/news/content/558930"},
@@ -210,6 +227,7 @@ const POINTS = [
    road:"ไม่ระบุความลึกน้ำ · ฉะเชิงเทรามีทางหลวงผ่านไม่ได้อีก 3 จุดบน ทล.3076 (ดูรายละเอียดที่หมุดฉะเชิงเทรา)",
    note:"วงรัศมีแสดงพื้นที่โดยประมาณ ไม่ใช่แนวถนนจริง", src:["doh29"]}
 ];
+/* ===== AUTO-UPDATED BLOCK END ===== */
 
 // ===== helpers =====
 const $ = s => document.querySelector(s);
@@ -242,6 +260,25 @@ function detailHtml(p){
   <div class="src">แหล่งที่มา: ${srcLinks(p.src)}</div>
   <div style="margin-top:8px"><a class="btn" target="_blank" rel="noopener" href="${gmap(p)}">เปิดจุดนี้ใน Google Maps</a></div>`;
 }
+
+// ===== แถบเวลาอัปเดต =====
+const fmt = new Intl.DateTimeFormat("th-TH",{timeZone:"Asia/Bangkok",weekday:"short",day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit",hour12:false});
+const stamp = iso => fmt.format(new Date(iso)) + " น.";
+function rel(ms){
+  const m=Math.round(Math.abs(ms)/60000), h=Math.floor(m/60), mm=m%60;
+  const t = m<1?"ไม่ถึง 1 นาที": h>=24?`${Math.floor(h/24)} วัน ${h%24} ชม.`: h>=1?`${h} ชม. ${mm} นาที`:`${m} นาที`;
+  return ms<=0 ? `${t}ที่แล้ว` : `อีก ${t}`;
+}
+function renderStamp(){
+  const now=Date.now(), up=new Date(DATA_META.updatedAt).getTime(), nx=new Date(DATA_META.nextUpdate).getTime();
+  const overdue = now > nx + 2*3600*1000;
+  const el=$("#stamp"); el.classList.toggle("stale",overdue);
+  el.innerHTML = `
+   <div><small>Claude ดึงข้อมูลล่าสุด</small><b>${stamp(DATA_META.updatedAt)}</b> <span class="rel">(${rel(up-now)})</span></div>
+   <div><small>${overdue?"เลยกำหนดอัปเดตแล้ว ข้อมูลอาจเก่า · รอบที่กำหนดไว้":"อัปเดตครั้งถัดไป (ตามกำหนด)"}</small><b>${stamp(DATA_META.nextUpdate)}</b> <span class="rel">(${rel(nx-now)})</span></div>
+   <div><small>ข้อมูลอ้างอิง</small><b>${DATA_META.dataAsOf}</b></div>`;
+}
+renderStamp(); setInterval(renderStamp,60000);
 
 // ===== KPIs =====
 (function(){
